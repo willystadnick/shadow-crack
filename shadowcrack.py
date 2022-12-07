@@ -48,8 +48,9 @@ if __name__ == "__main__":
 
     try:
         fileshadow = open(args.shadow, "r", encoding=args.encoding)
-    except:
-        print(ff.red("Error on open shadow file"))
+    except Exception as e:
+        print(ff.red("Error on open shadow file: "))
+        print(ff.red(str(e)))
         sys.exit()
 
     users = list(filter(lambda user: "$" in user, fileshadow.read().split("\n")))
@@ -62,8 +63,9 @@ if __name__ == "__main__":
 
     try:
         filewordlist = open(args.wordlist, "r", encoding=args.encoding)
-    except:
-        print(ff.red("Error on open wordlist file"))
+    except Exception as e:
+        print(ff.red("Error on open wordlist file: "))
+        print(ff.red(str(e)))
         sys.exit()
 
     passwords = list(filter(lambda password: password, filewordlist.read().split("\n")))
