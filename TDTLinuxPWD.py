@@ -37,11 +37,6 @@ def banner():
 
     """ % (bcolors.OKBLUE, bcolors.ENDC, bcolors.FAIL))
 
-# Arguments Parser
-parser = ArgumentParser()
-parser.add_argument("-s", "--shadow", help="shadow file")
-parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="wordist file %s" %bcolors.ENDC)
-
 # Count wordlist password
 def countlines(textfile):
 	num_lines = len(open(textfile).readlines(  ))
@@ -54,6 +49,9 @@ if __name__ == "__main__":
         print("This program will check the users in the shadow file and use a wordlist to try crack the password hashes.")
         print("If wordlist not especified, it will use the wordlist.txt by default.")
         print(bcolors.ENDC)
+        parser = ArgumentParser()
+        parser.add_argument("-s", "--shadow", help="shadow file")
+        parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="wordist file %s" %bcolors.ENDC)
         args = parser.parse_args()
     except:
         sys.exit(0)
