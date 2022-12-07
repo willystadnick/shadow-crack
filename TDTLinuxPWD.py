@@ -16,9 +16,6 @@ os.system("clear")
 class ff:
     END = '\033[0m'
     BOLD = '\033[1m'
-    THIN = '\033[2m'
-    ITALIC = '\033[3m'
-    UNDERLINE = '\033[4m'
     RED = '\033[91m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
@@ -28,18 +25,6 @@ class ff:
 
     def bold(text):
         return ff.BOLD + str(text) + ff.END
-
-
-    def thin(text):
-        return ff.THIN + str(text) + ff.END
-
-
-    def italic(text):
-        return ff.ITALIC + str(text) + ff.END
-
-
-    def underline(text):
-        return ff.UNDERLINE + str(text) + ff.END
 
 
     def red(text):
