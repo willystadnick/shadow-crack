@@ -51,7 +51,7 @@ if __name__ == "__main__":
         print(bcolors.ENDC)
         parser = ArgumentParser()
         parser.add_argument("-s", "--shadow", help="shadow file")
-        parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="wordist file %s" %bcolors.ENDC)
+        parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="wordlist file")
         args = parser.parse_args()
     except:
         sys.exit(0)
