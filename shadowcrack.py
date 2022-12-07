@@ -38,14 +38,11 @@ class ff:
 
 
 if __name__ == "__main__":
-    try:
-        parser = ArgumentParser()
-        parser.add_argument("-s", "--shadow", default="shadow.txt", help="Shadow file")
-        parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="Wordlist file")
-        parser.add_argument("-e", "--encoding", default="latin-1", help="File encoding")
-        args = parser.parse_args()
-    except:
-        sys.exit()
+    parser = ArgumentParser()
+    parser.add_argument("-s", "--shadow", default="shadow.txt", help="Shadow file")
+    parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="Wordlist file")
+    parser.add_argument("-e", "--encoding", default="latin-1", help="File encoding")
+    args = parser.parse_args()
 
     print(ff.blue("Reading users..."))
 
