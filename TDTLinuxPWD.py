@@ -5,12 +5,12 @@ import os
 from argparse import ArgumentParser
 
 class ff:
-    END = '\033[0m'
-    BOLD = '\033[1m'
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    BLUE = '\033[94m'
+    END = "\033[0m"
+    BOLD = "\033[1m"
+    RED = "\033[91m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    BLUE = "\033[94m"
 
 
     def bold(text):
@@ -50,12 +50,12 @@ if __name__ == "__main__":
     print(ff.blue("Reading users..."))
 
     try:
-        fileshadow = open(args.shadow, 'r', encoding=args.encoding)
+        fileshadow = open(args.shadow, "r", encoding=args.encoding)
     except:
         print(ff.red("Error trying to open shadow file"))
         sys.exit()
 
-    users = list(filter(lambda user: '$' in user, fileshadow.read().split('\n')))
+    users = list(filter(lambda user: "$" in user, fileshadow.read().split("\n")))
     usertotal = len(users)
     usercount = 0
 
@@ -64,12 +64,12 @@ if __name__ == "__main__":
     print(ff.blue("Reading passwords..."))
 
     try:
-        filewordlist = open(args.wordlist, 'r', encoding=args.encoding)
+        filewordlist = open(args.wordlist, "r", encoding=args.encoding)
     except:
         print(ff.red("Error trying to open wordlist file"))
         sys.exit()
 
-    passwords = list(filter(lambda password: password, filewordlist.read().split('\n')))
+    passwords = list(filter(lambda password: password, filewordlist.read().split("\n")))
     passwordtotal = len(passwords)
     passwordcount = 0
 
