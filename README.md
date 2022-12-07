@@ -1,4 +1,4 @@
-# TDTLinuxPWD
+# ShadowCrack
 
 Crack linux shadow passwords using a wordlist.
 
@@ -20,13 +20,13 @@ gunzip -k wordlist.txt.gz
 ## Usage
 
 ``` sh
-python3 TDTLinuxPWD.py
+python3 shadowcrack.py
 ```
 
 ## Help
 
 ``` sh
-python3 TDTLinuxPWD.py -h
+python3 shadowcrack.py -h
 ```
 
 ## Credits
