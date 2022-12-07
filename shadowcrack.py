@@ -95,12 +95,11 @@ if __name__ == "__main__":
 
             try:
                 result = crypt.crypt(password, salt)
-
-                if result == hash:
-                    found = True
-                    break
-
             except KeyboardInterrupt:
+                break
+
+            if result == hash:
+                found = True
                 break
 
         if found:
