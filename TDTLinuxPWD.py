@@ -42,6 +42,7 @@ if __name__ == "__main__":
         parser = ArgumentParser()
         parser.add_argument("-s", "--shadow", default="shadow.txt", help="Shadow file")
         parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="Wordlist file")
+        parser.add_argument("-e", "--encoding", default="latin-1", help="File encoding")
         args = parser.parse_args()
     except:
         sys.exit()
@@ -49,7 +50,7 @@ if __name__ == "__main__":
     print(ff.blue("Reading users..."))
 
     try:
-        fileshadow = open(args.shadow, 'r', encoding='latin-1')
+        fileshadow = open(args.shadow, 'r', encoding=args.encoding)
     except:
         print(ff.red("Error trying to open shadow file"))
         sys.exit()
@@ -63,7 +64,7 @@ if __name__ == "__main__":
     print(ff.blue("Reading passwords..."))
 
     try:
-        filewordlist = open(args.wordlist, 'r', encoding='latin-1')
+        filewordlist = open(args.wordlist, 'r', encoding=args.encoding)
     except:
         print(ff.red("Error trying to open wordlist file"))
         sys.exit()
