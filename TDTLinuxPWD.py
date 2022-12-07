@@ -78,10 +78,6 @@ def banner():
     %s
     """ % (ff.BLUE, ff.END, ff.RED, ff.END))
 
-# Count wordlist password
-def countlines(textfile):
-	num_lines = len(open(textfile).readlines(  ))
-	return num_lines
 
 # Main function
 if __name__ == "__main__":
@@ -95,53 +91,65 @@ if __name__ == "__main__":
         parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="wordlist file")
         args = parser.parse_args()
     except:
-        sys.exit(0)
+        sys.exit()
+
     if len(sys.argv) < 3:
         print(ff.yellow("Usage: python "+sys.argv[0]+" -s shadown -w wordlist.txt"))
         print(ff.yellow("Use "+sys.argv[0]+" -h or --help to print the help option"))
         sys.exit()
-    else:
-        print(ff.purple("Starting the program..."))
-        numlines = countlines(args.wordlist)
-        print(ff.purple("The file ") + ff.green(args.wordlist) + ff.purple(" has ") + ff.green(numlines) + ff.purple(" passwords"))
-        try:
-            fileshadow = open(args.shadow,'r')
-        except:
-            print(ff.red("Error trying to open shadow file"))
-            sys.exit()
-        users = fileshadow.read().split('\n')
-        for user in users:
-            if '$' in user:
-                userline = user.split(":")
-                hashes = userline[1].split("$")
-                salt = "$"+hashes[1]+"$"+hashes[2]+"$"
-                passfound = 0
-                print(ff.yellow("Cracking password for the user ") + ff.green(userline[0]))
-                try:
-                    filewordlist = open(args.wordlist,'r')
-                except:
-                    print(ff.red("Error trying to open wordlist file"))
-                    sys.exit()
-                passwords = filewordlist.read().split('\n')
-                pwdcount = 0
-                for password in passwords:
-                    try:
-                        pwdcount += 1
-                        print(ff.yellow("Trying ") + ff.green(pwdcount) + ff.yellow(" of ") + ff.green(numlines) + ff.yellow(" passwords"))
-                        result = crypt.crypt(password, salt)
-                        if (result == userline[1]):
-                            sys.stdout.write("\r")
-                            sys.stdout.flush()
-                            print(ff.underline(ff.blue("Password found:")) + " " + ff.bold(ff.green(password)))
-                            passfound = 1
-                            break
-                        else:
-                            sys.stdout.write("\033[F") #Back to previous line
-                            sys.stdout.write("\033[k") #Clear line
-                            sys.stdout.write("\r")
-                            sys.stdout.flush()
-                    except KeyboardInterrupt:
-                        print(ff.red("Cracking aborted."))
-                        break
-                if (passfound == 0):
-                    print(ff.red("Could not crack the user's password"))
+
+    try:
+        fileshadow = open(args.shadow, 'r', encoding='latin-1')
+    except:
+        print(ff.red("Error trying to open shadow file"))
+        sys.exit()
+
+    users = list(filter(lambda user: '$' in user, fileshadow.read().split('\n')))
+    usertotal = len(users)
+    usercount = 0
+    print(ff.purple("The shadow file has ") + ff.blue(len(users)) + ff.purple(" users"))
+
+    try:
+        filewordlist = open(args.wordlist, 'r', encoding='latin-1')
+    except:
+        print(ff.red("Error trying to open wordlist file"))
+        sys.exit()
+
+    passwords = list(filter(lambda password: password, filewordlist.read().split('\n')))
+    passwordtotal = len(passwords)
+    passwordcount = 0
+    print(ff.purple("The wordlist file has ") + ff.blue(len(passwords)) + ff.purple(" passwords"))
+
+    for user in users:
+        usercount += 1
+        userprogress = " " + ff.blue("(" + str(usercount) + "/" + str(usertotal) + ")") + " "
+        fields = user.split(":")
+        username = fields[0]
+        hash = fields[1]
+        hashes = hash.split("$")
+        salt = "$" + hashes[1] + "$" + hashes[2]
+        found = False
+
+        print(ff.yellow("Cracking user") + userprogress + ff.bold(ff.green(username)))
+
+        for password in passwords:
+            passwordcount += 1
+            passwordprogress = " " + ff.blue("(" + str(passwordcount) + "/" + str(passwordtotal) + ")") + " "
+            print(ff.yellow("Trying password") + passwordprogress + ff.bold(ff.green(password)))
+            sys.stdout.write("\033[F\033[K") # clear previous line
+
+            try:
+                result = crypt.crypt(password, salt)
+
+                if result == hash:
+                    found = True
+                    break
+
+            except KeyboardInterrupt:
+                break
+
+
+        if found:
+            print(ff.yellow("Password cracked:") + " " + ff.bold(ff.green(password)))
+        else:
+            print(ff.red("Could not crack the password"))
