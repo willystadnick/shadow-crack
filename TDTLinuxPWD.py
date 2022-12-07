@@ -1,18 +1,9 @@
-#!/usr/bin/python
-#Developed by Tiago Neves
-#Github: https://github.com/TiagoANeves
-#Version: 1.0
-#All rights reserved
 
-#Import necessary modules
 import crypt
 import sys
 import os
 from argparse import ArgumentParser
 
-os.system("clear")
-
-#Font format
 class ff:
     END = '\033[0m'
     BOLD = '\033[1m'
@@ -20,7 +11,6 @@ class ff:
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
     BLUE = '\033[94m'
-    PURPLE = '\033[95m'
 
 
     def bold(text):
@@ -43,45 +33,20 @@ class ff:
         return ff.BLUE + str(text) + ff.END
 
 
-    def purple(text):
-        return ff.PURPLE + str(text) + ff.END
+    def clear():
+        sys.stdout.write("\033[F\033[K")
 
 
-#Create Banner
-def banner():
-    print("""
-    %s
-      _____   ____    _____   _       _                          ____   __        __  ____
-     |_   _| |  _ \  |_   _| | |     (_)  _ __    _   _  __  __ |  _ \  \ \      / / |  _ \\
-       | |   | | | |   | |   | |     | | | '_ \  | | | | \ \/ / | |_) |  \ \ /\ / /  | | | |
-       | |   | |_| |   | |   | |___  | | | | | | | |_| |  >  <  |  __/    \ V  V /   | |_| |
-       |_|   |____/    |_|   |_____| |_| |_| |_|  \__,_| /_/\_\ |_|        \_/\_/    |____/
-    %s
-    %s
-     # Coded By Tiago Neves
-     # Github https://github.com/TiagoANeves
-    %s
-    """ % (ff.BLUE, ff.END, ff.RED, ff.END))
-
-
-# Main function
 if __name__ == "__main__":
     try:
-        banner()
-        print("This program will check the users in the shadow file and use a wordlist to try crack the password hashes.")
-        print("If wordlist not especified, it will use the wordlist.txt by default.")
-        print()
         parser = ArgumentParser()
-        parser.add_argument("-s", "--shadow", help="shadow file")
-        parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="wordlist file")
+        parser.add_argument("-s", "--shadow", default="shadow.txt", help="Shadow file")
+        parser.add_argument("-w", "--wordlist", default="wordlist.txt", help="Wordlist file")
         args = parser.parse_args()
     except:
         sys.exit()
 
-    if len(sys.argv) < 3:
-        print(ff.yellow("Usage: python "+sys.argv[0]+" -s shadown -w wordlist.txt"))
-        print(ff.yellow("Use "+sys.argv[0]+" -h or --help to print the help option"))
-        sys.exit()
+    print(ff.blue("Reading users..."))
 
     try:
         fileshadow = open(args.shadow, 'r', encoding='latin-1')
@@ -92,7 +57,10 @@ if __name__ == "__main__":
     users = list(filter(lambda user: '$' in user, fileshadow.read().split('\n')))
     usertotal = len(users)
     usercount = 0
-    print(ff.purple("The shadow file has ") + ff.blue(len(users)) + ff.purple(" users"))
+
+    ff.clear()
+
+    print(ff.blue("Reading passwords..."))
 
     try:
         filewordlist = open(args.wordlist, 'r', encoding='latin-1')
@@ -103,11 +71,12 @@ if __name__ == "__main__":
     passwords = list(filter(lambda password: password, filewordlist.read().split('\n')))
     passwordtotal = len(passwords)
     passwordcount = 0
-    print(ff.purple("The wordlist file has ") + ff.blue(len(passwords)) + ff.purple(" passwords"))
+
+    ff.clear()
 
     for user in users:
         usercount += 1
-        userprogress = " " + ff.blue("(" + str(usercount) + "/" + str(usertotal) + ")") + " "
+        userprogress = ff.yellow("(" + str(usercount) + "/" + str(usertotal) + ")") + " "
         fields = user.split(":")
         username = fields[0]
         hash = fields[1]
@@ -115,13 +84,13 @@ if __name__ == "__main__":
         salt = "$" + hashes[1] + "$" + hashes[2]
         found = False
 
-        print(ff.yellow("Cracking user") + userprogress + ff.bold(ff.green(username)))
+        print(ff.blue("Cracking user: ") + userprogress + ff.bold(ff.green(username)))
 
         for password in passwords:
             passwordcount += 1
-            passwordprogress = " " + ff.blue("(" + str(passwordcount) + "/" + str(passwordtotal) + ")") + " "
-            print(ff.yellow("Trying password") + passwordprogress + ff.bold(ff.green(password)))
-            sys.stdout.write("\033[F\033[K") # clear previous line
+            passwordprogress = ff.yellow("(" + str(passwordcount) + "/" + str(passwordtotal) + ")") + " "
+            print(ff.blue("Trying password: ") + passwordprogress + ff.bold(ff.green(password)))
+            ff.clear()
 
             try:
                 result = crypt.crypt(password, salt)
@@ -133,8 +102,7 @@ if __name__ == "__main__":
             except KeyboardInterrupt:
                 break
 
-
         if found:
-            print(ff.yellow("Password cracked:") + " " + ff.bold(ff.green(password)))
+            print(ff.blue("Password cracked: ") + ff.bold(ff.green(password)))
         else:
             print(ff.red("Could not crack the password"))

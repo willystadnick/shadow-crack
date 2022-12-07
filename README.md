@@ -1,46 +1,34 @@
 # TDTLinuxPWD
 
-Linux shadow password crack
+Crack linux shadow passwords using a wordlist.
 
-## Installing
+## Config
 
-Clone this repository:
+### Shadow
+
 ``` sh
-git clone https://github.com/TiagoANeves/TDTLinuxPWD.git
+sudo cp /etc/shadow shadow.txt
+sudo chmod +r shadow.txt
 ```
 
-Now, extract the wordlist file:
+### Wordlist
+
 ``` sh
-gunzip wordlist.txt.gz
+gunzip -k wordlist.txt.gz
 ```
 
-## Default wordlist file
+## Usage
 
-The script will use the file `wordlist.txt` by default if the option -w is not specified
-
-## Examples
-### Help menu
 ``` sh
-python TDTLinuxPWD.py -h 
+python3 TDTLinuxPWD.py
 ```
-### Using the default wordlist
+
+## Help
+
 ``` sh
-python TDTLinuxPWD.py -s /etc/shadow 
+python3 TDTLinuxPWD.py -h
 ```
-### Using a personalized wordlist
-``` sh
-python TDTLinuxPWD.py -s /etc/shadow -w /path/to/wordlist.txt 
-```
-![Print](/images/Print.png)
-
-That's all folks!
-
-## License
-
-TDTLinuxPWD is licensed under the GNU GPL license. take a look at the [LICENSE](https://github.com/TiagoANeves/TDTLinuxPWD/blob/master/LICENSE) for more information.
-
-## Version
-**Current version is 1.1.0**
 
 ## Credits
-- [Tiago Neves](https://github.com/TiagoANeves)
+
+https://github.com/TiagoANeves/TDTLinuxPWD
